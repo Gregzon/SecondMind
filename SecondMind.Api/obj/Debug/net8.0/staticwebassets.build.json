@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "VTyJyCZ3xL2CP6GDV82dR7UZ/BIT9pxd38KX2sxBg48=",
+  "Source": "SecondMind.Api",
+  "BasePath": "_content/SecondMind.Api",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

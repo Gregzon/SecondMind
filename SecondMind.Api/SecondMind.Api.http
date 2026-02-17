@@ -1,0 +1,6 @@
+@SecondMind.Api_HostAddress = http://localhost:5201
+
+GET {{SecondMind.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

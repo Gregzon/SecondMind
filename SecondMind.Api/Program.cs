@@ -74,6 +74,18 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+// Add CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("FrontendCorsPolicy", policy =>
+    {
+        policy.WithOrigins("http://localhost:5173") // dein React-Devserver
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
+
 var app = builder.Build();
 
 // Middleware-Pipeline
@@ -84,7 +96,7 @@ if (app.Environment.IsDevelopment())
 }
 
 // app.UseHttpsRedirection(); // lokal erstmal aus
-
+app.UseCors("FrontendCorsPolicy"); //
 app.UseAuthentication();
 app.UseAuthorization();
 

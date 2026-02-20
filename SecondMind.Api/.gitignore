@@ -9,6 +9,7 @@ obj/
 
 # Geheimnisse
 appsettings.Local.json
+appsettings.Development.json
 appsettings.json
 *.env
 

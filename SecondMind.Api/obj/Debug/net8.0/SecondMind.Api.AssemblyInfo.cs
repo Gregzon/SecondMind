@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SecondMind.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e193a9c1df19652af5e0b9410b0d77c771b7c013")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+12582ad3ac9225996c27e7cc24a01eaf8111d8ef")]
 [assembly: System.Reflection.AssemblyProductAttribute("SecondMind.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SecondMind.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

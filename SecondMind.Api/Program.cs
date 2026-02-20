@@ -1,14 +1,17 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using SecondMind.Api.Data;
 using SecondMind.Api.Services;
-using Microsoft.OpenApi.Models;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
-var key = Encoding.ASCII.GetBytes("SUPER_SECRET_KEY_FOR_JWT_MIND_IST_MINDESTENS_32ZEICHEN_LANG"); // Später: sicher speichern
 
+// JWT-Key aus appsettings.json
+var key = Encoding.ASCII.GetBytes(builder.Configuration["Jwt:Key"]!);
+
+// Authentication & JWT
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -28,17 +31,27 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+// DbContext
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+// Services
+builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<TaskService>();
+builder.Services.AddScoped<CategoryService>();
+builder.Services.AddSingleton<JwtService>(sp =>
+{
+    var config = sp.GetRequiredService<IConfiguration>();
+    return new JwtService(config["Jwt:Key"]!);
+});
+
+// Controllers & Swagger
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "SecondMind API", Version = "v1" });
 
-    // JWT Authorization in Swagger
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Name = "Authorization",
@@ -60,31 +73,30 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 });
-builder.Services.AddControllers();
-builder.Services.AddScoped<AuthService>();
-builder.Services.AddScoped<TaskService>();
-builder.Services.AddScoped<CategoryService>();
-builder.Services.AddSingleton<JwtService>(sp =>
-{
-    var config = sp.GetRequiredService<IConfiguration>();
-    var key = config["Jwt:Key"]!;
-    return new JwtService(key);
-});
 
-builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
+// Add CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("FrontendCorsPolicy", policy =>
+    {
+        policy.WithOrigins("http://localhost:5173") // dein React-Devserver
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
 
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Middleware-Pipeline
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-// app.UseHttpsRedirection();
-
+// app.UseHttpsRedirection(); // lokal erstmal aus
+app.UseCors("FrontendCorsPolicy"); //
 app.UseAuthentication();
 app.UseAuthorization();
 

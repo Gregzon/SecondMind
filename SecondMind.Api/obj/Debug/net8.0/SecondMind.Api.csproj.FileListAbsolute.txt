@@ -112,3 +112,16 @@ C:\Projects\SecondMind\SecondMind.Api\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis
 C:\Projects\SecondMind\SecondMind.Api\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
 C:\Projects\SecondMind\SecondMind.Api\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
 C:\Projects\SecondMind\SecondMind.Api\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Projects\SecondMind\SecondMind.Api\obj\Debug\net8.0\SecondMind.Api.sourcelink.json
+C:\Projects\SecondMind\SecondMind.Api\bin\Debug\net8.0\Frontend\package-lock.json
+C:\Projects\SecondMind\SecondMind.Api\bin\Debug\net8.0\Frontend\package.json
+C:\Projects\SecondMind\SecondMind.Api\bin\Debug\net8.0\Frontend\tsconfig.app.json
+C:\Projects\SecondMind\SecondMind.Api\bin\Debug\net8.0\Frontend\tsconfig.json
+C:\Projects\SecondMind\SecondMind.Api\bin\Debug\net8.0\Frontend\tsconfig.node.json
+C:\Projects\SecondMind\SecondMind.Api\bin\Debug\net8.0\package-lock.json
+C:\Projects\SecondMind\SecondMind.Api\bin\Debug\net8.0\Frontend\android\app\src\main\assets\capacitor.config.json
+C:\Projects\SecondMind\SecondMind.Api\bin\Debug\net8.0\Frontend\android\app\src\main\assets\capacitor.plugins.json
+C:\Projects\SecondMind\SecondMind.Api\bin\Debug\net8.0\Frontend\ios\App\App\Assets.xcassets\AppIcon.appiconset\Contents.json
+C:\Projects\SecondMind\SecondMind.Api\bin\Debug\net8.0\Frontend\ios\App\App\Assets.xcassets\Contents.json
+C:\Projects\SecondMind\SecondMind.Api\bin\Debug\net8.0\Frontend\ios\App\App\Assets.xcassets\Splash.imageset\Contents.json
+C:\Projects\SecondMind\SecondMind.Api\bin\Debug\net8.0\Frontend\ios\App\App\capacitor.config.json

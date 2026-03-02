@@ -1,102 +1,140 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import type { AuthResponse } from '../types/AuthResponse';
+import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
 import {
     Box,
     Button,
     Heading,
     VStack,
-    Text,
     Flex,
     Fieldset,
     Stack,
     Field,
     Input,
     InputGroup,
-} from '@chakra-ui/react';
-import { register } from '@/services/AuthService';
-import { LuLock, LuMail } from 'react-icons/lu';
+} from "@chakra-ui/react";
+
+import { LuMail, LuLock } from "react-icons/lu";
+import { PasswordInput } from "@/components/ui/password-input";
+import { register } from "@/services/AuthService";
+
+import {
+    registerSchema,
+    type RegisterFormData,
+} from "../util/register.schema";
 
 interface RegisterPageProps {
-    onLogin: (auth: AuthResponse) => void;
+    onLogin: (auth: any) => void;
 }
 
 const RegisterPage = ({ onLogin }: RegisterPageProps) => {
-    const [registerEmail, setRegisterEmail] = useState('');
-    const [registerPassword, setRegisterPassword] = useState('');
-    const [error, setError] = useState('');
     const navigate = useNavigate();
 
-    const handleRegister = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setError('');
-        try {
-            const auth = await register(registerEmail, registerPassword);
-            onLogin(auth);
-            navigate('/dashboard');
-        } catch {
-            setError('Registrierung fehlgeschlagen. Prüfe E-Mail und Passwort.');
-        }
+    const {
+        register: formRegister,
+        handleSubmit,
+        formState: { errors, isSubmitting },
+    } = useForm<RegisterFormData>({
+        resolver: zodResolver(registerSchema),
+        mode: "onChange", // oder "onChange"
+    });
+
+    const onSubmit = async (data: RegisterFormData) => {
+        const auth = await register(
+            data.registerEmail,
+            data.registerPassword
+        );
+
+        onLogin(auth);
+        navigate("/dashboard");
     };
 
     return (
         <Flex minH="100vh" align="center" justify="center">
             <Box
-                backgroundColor={"bg.inverted"}
-                color={"bg.emphasized"}
-                padding={10}
-                borderWidth={"1px"}
-                borderRadius={"x1"}
-                boxShadow={"x1"}
-                w={"60%"}
+                bg={"gray.emphasized"}
+                color="fg"
+                p={10}
+                borderWidth="1px"
+                borderRadius="xl"
+                w="40%"
             >
                 <Heading mb={6} textAlign="center">
                     Registrierung
                 </Heading>
 
-                {error && (
-                    <Text mb={4} color="red.500" textAlign="center">
-                        {error}
-                    </Text>
-                )}
+                {/* TODO: Fehlermeldung einbauen, falls es die E-Mail schon gibt */}
 
-                <VStack gap={4} as="form">
+                <VStack
+                    as="form"
+                    gap={4}
+                    onSubmit={handleSubmit(onSubmit)}
+                >
                     <Fieldset.Root size="lg">
                         <Stack mb={4}>
-                            <Fieldset.HelperText color={"fg.inverted"}>Bitte trage deine E-Mail und Passwort ein.</Fieldset.HelperText>
+                            <Fieldset.HelperText>
+                                Bitte trage deine E-Mail und Passwort ein.
+                            </Fieldset.HelperText>
                         </Stack>
 
                         <Fieldset.Content>
-                            <Field.Root required>
-                                <Field.Label >E-Mail-Adresse <Field.RequiredIndicator /></Field.Label>
+                            {/* EMAIL */}
+                            <Field.Root
+                                required
+                                invalid={!!errors.registerEmail}
+                            >
+                                <Field.Label>
+                                    E-Mail-Adresse <Field.RequiredIndicator />
+                                </Field.Label>
+
                                 <InputGroup startElement={<LuMail />}>
                                     <Input
-                                        name='registerEmail'
                                         type="email"
-                                        value={registerEmail}
-                                        onChange={(e) => setRegisterEmail(e.target.value)}
+                                        {...formRegister("registerEmail")}
                                     />
                                 </InputGroup>
+
+                                <Field.ErrorText>
+                                    {errors.registerEmail?.message}
+                                </Field.ErrorText>
                             </Field.Root>
 
-                            <Field.Root required>
-                                <Field.Label>Passwort <Field.RequiredIndicator /></Field.Label>
+                            {/* PASSWORD */}
+                            <Field.Root
+                                required
+                                invalid={!!errors.registerPassword}
+                            >
+                                <Field.Label>
+                                    Passwort <Field.RequiredIndicator />
+                                </Field.Label>
+
                                 <InputGroup startElement={<LuLock />}>
-                                    <Input
-                                        name='registerPassword'
-                                        type="password"
-                                        value={registerPassword}
-                                        onChange={(e) => setRegisterPassword(e.target.value)}
+                                    <PasswordInput
+                                        {...formRegister("registerPassword")}
                                     />
                                 </InputGroup>
+
+                                <Field.ErrorText>
+                                    {errors.registerPassword?.message}
+                                </Field.ErrorText>
                             </Field.Root>
                         </Fieldset.Content>
 
-                        <Flex justify={"space-evenly"}>
-                            <Button type='button' variant={"solid"} bg={"bg"} color={"fg"} alignSelf={"flex-start"} onClick={handleRegister}>
+                        <Flex justify="space-evenly" mt={4}>
+                            <Button
+                                type="submit"
+                                loading={isSubmitting}
+                                variant={"solid"} bg={"bg"} color={"fg"} alignSelf={"flex-start"}
+                            >
                                 Registrieren
                             </Button>
-                            <Button type='button' variant={"solid"} bg={"bg"} color={"fg"} onClick={() => navigate('/login')}>
+
+                            <Button
+                                type="button"
+                                variant={"solid"} bg={"bg"} color={"fg"} alignSelf={"flex-start"}
+                                onClick={() => navigate("/login")}
+                            >
                                 Zurück zum Login
                             </Button>
                         </Flex>

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SecondMind.Api.Data;
@@ -11,9 +12,11 @@ using SecondMind.Api.Data;
 namespace SecondMind.Api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260225164627_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -28,56 +31,41 @@ namespace SecondMind.Api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("ColorHex")
-                        .HasColumnType("text");
+                    b.Property<string>("Color")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Icon")
-                        .HasColumnType("text");
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
 
                     b.Property<int>("OrderIndex")
                         .HasColumnType("integer");
 
-                    b.Property<Guid?>("TemplateId")
-                        .HasColumnType("uuid");
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TemplateId");
-
                     b.HasIndex("UserId");
 
                     b.ToTable("Categories");
-                });
-
-            modelBuilder.Entity("CategoryTemplate", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("ColorHex")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Icon")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("OrderIndex")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("CategoryTemplates");
                 });
 
             modelBuilder.Entity("SecondMind.Api.Models.TaskItem", b =>
@@ -114,6 +102,9 @@ namespace SecondMind.Api.Migrations
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
 
+                    b.Property<bool>("isDeleted")
+                        .HasColumnType("boolean");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
@@ -134,7 +125,8 @@ namespace SecondMind.Api.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()
@@ -147,17 +139,11 @@ namespace SecondMind.Api.Migrations
 
             modelBuilder.Entity("Category", b =>
                 {
-                    b.HasOne("CategoryTemplate", "Template")
-                        .WithMany()
-                        .HasForeignKey("TemplateId");
-
                     b.HasOne("SecondMind.Api.Models.User", "User")
-                        .WithMany()
+                        .WithMany("Categories")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Template");
 
                     b.Navigation("User");
                 });
@@ -165,7 +151,7 @@ namespace SecondMind.Api.Migrations
             modelBuilder.Entity("SecondMind.Api.Models.TaskItem", b =>
                 {
                     b.HasOne("Category", "Category")
-                        .WithMany("Tasks")
+                        .WithMany()
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -181,9 +167,9 @@ namespace SecondMind.Api.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Category", b =>
+            modelBuilder.Entity("SecondMind.Api.Models.User", b =>
                 {
-                    b.Navigation("Tasks");
+                    b.Navigation("Categories");
                 });
 #pragma warning restore 612, 618
         }

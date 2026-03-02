@@ -4,8 +4,11 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import LoginPage from './pages/LoginPage';
 import { ChakraProvider, defaultSystem } from '@chakra-ui/react';
 import RegisterPage from './pages/RegisterPage';
-import DashboardPage from './pages/DashboardPage';
 import { ColorModeProvider } from './components/ui/color-mode';
+import DashboardLayout from './pages/Dashboard/DashboardLayout';
+import HomePage from './pages/Dashboard/pages/HomePage';
+import StatsPage from './pages/Dashboard/pages/StatsPage';
+import SettingsPage from './pages/Dashboard/pages/SettingsPage';
 
 export function App() {
   const [auth, setAuth] = useState<AuthResponse | null>(null);
@@ -26,10 +29,14 @@ export function App() {
               path="/dashboard"
               element={
                 <ProtectedRoute>
-                  <DashboardPage children={undefined} />
+                  <DashboardLayout />
                 </ProtectedRoute>
               }
-            />
+            >
+              <Route index element={<HomePage />} />
+              <Route path="stats" element={<StatsPage />} />
+              <Route path="settings" element={<SettingsPage />} />
+            </Route>
             <Route path="*" element={<Navigate to="/login" replace />} />
           </Routes>
         </Router>

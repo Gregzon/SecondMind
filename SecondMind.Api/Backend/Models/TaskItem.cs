@@ -24,4 +24,6 @@ public class TaskItem
     // Optional: AI-Felder (noch leer, Phase 2)
     public string? AiSummary { get; set; }
     public string? AiSuggestions { get; set; }
+
+    public bool isDeleted { get; set; } = false;
 }

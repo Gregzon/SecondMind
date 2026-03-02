@@ -30,13 +30,13 @@ const LoginPage = ({ onLogin }: LoginPageProps) => {
     return (
         <Flex minH="100vh" align="center" justify="center" direction={"column"} width={"100%"}>
             <Box
-                backgroundColor={"bg"}
                 color={"fg"}
+                bg={"gray.emphasized"}
                 padding={10}
                 borderWidth={"1px"}
                 borderRadius={"x1"}
                 boxShadow={"x1"}
-                w={"60%"}
+                w={"40%"}
             >
                 <Heading mb={6} textAlign="center">
                     Login

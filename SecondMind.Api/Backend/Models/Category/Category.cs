@@ -1,24 +1,36 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using SecondMind.Api.Models;
 
 public class Category
 {
+    [Key]
     public Guid Id { get; set; }
 
+    [Required]
+    [MaxLength(50)]
     public string Name { get; set; } = string.Empty;
 
-    public string? ColorHex { get; set; }
-    public string? Icon { get; set; }
+    [Required]
+    [MaxLength(50)]
+    public string? Color { get; set; } = "gray";
 
-    public int OrderIndex { get; set; }
+    [Required]
+    [MaxLength(50)]
+    public string? Icon { get; set; } = "LuFolder";
 
-    // Owner
+    public int OrderIndex { get; set; } = 0;
+
+    // Owner FK
+    [Required]
     public Guid UserId { get; set; }
+
+    [ForeignKey("UserId")]
     public User User { get; set; } = null!;
 
-    // Optional: Referenz auf Template
-    public Guid? TemplateId { get; set; }
-    public CategoryTemplate? Template { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-    // Navigation
-    public ICollection<TaskItem> Tasks { get; set; } = new List<TaskItem>();
+    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+
+    public bool IsDeleted { get; set; } = false;
 }

@@ -11,80 +11,104 @@ public class CategoryService
         _db = db;
     }
 
+    // -------------------------
+    // GET
+    // -------------------------
     public async Task<List<CategoryResponse>> GetCategoriesForUser(Guid userId)
     {
-        var categories = await _db.Categories
-            .Where(c => c.UserId == userId)
+        return await _db.Categories
+            .Where(c => c.UserId == userId && !c.IsDeleted)
             .OrderBy(c => c.OrderIndex)
+            .Select(c => MapToResponse(c))
             .ToListAsync();
-
-        return categories.Select(c => new CategoryResponse
-        {
-            Id = c.Id,
-            Name = c.Name,
-            ColorHex = c.ColorHex,
-            Icon = c.Icon,
-            OrderIndex = c.OrderIndex
-        }).ToList();
     }
 
+    // -------------------------
+    // CREATE
+    // -------------------------
     public async Task<CategoryResponse> CreateCategory(CreateCategoryRequest request, Guid userId)
     {
+        var maxOrder = await _db.Categories
+            .Where(c => c.UserId == userId && !c.IsDeleted)
+            .MaxAsync(c => (int?)c.OrderIndex) ?? 0;
+
         var category = new Category
         {
+            Id = Guid.NewGuid(),
             Name = request.Name,
-            ColorHex = request.ColorHex,
+            Color = request.ColorHex,
             Icon = request.Icon,
-            OrderIndex = request.OrderIndex,
-            UserId = userId
+            OrderIndex = maxOrder + 1,
+            UserId = userId,
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
         };
 
         _db.Categories.Add(category);
         await _db.SaveChangesAsync();
 
-        return new CategoryResponse
-        {
-            Id = category.Id,
-            Name = category.Name,
-            ColorHex = category.ColorHex,
-            Icon = category.Icon,
-            OrderIndex = category.OrderIndex
-        };
+        return MapToResponse(category);
     }
 
+    // -------------------------
+    // UPDATE
+    // -------------------------
     public async Task<CategoryResponse?> UpdateCategory(Guid id, UpdateCategoryRequest request, Guid userId)
     {
-        var category = await _db.Categories.FirstOrDefaultAsync(c => c.Id == id && c.UserId == userId);
-        if (category == null) return null;
+        var category = await _db.Categories
+            .FirstOrDefaultAsync(c => c.Id == id && c.UserId == userId && !c.IsDeleted);
+
+        if (category == null)
+            return null;
 
         category.Name = request.Name;
-        category.ColorHex = request.ColorHex;
+        category.Color = request.ColorHex;
         category.Icon = request.Icon;
         category.OrderIndex = request.OrderIndex;
+        category.UpdatedAt = DateTime.UtcNow;
 
         await _db.SaveChangesAsync();
 
-        return new CategoryResponse
-        {
-            Id = category.Id,
-            Name = category.Name,
-            ColorHex = category.ColorHex,
-            Icon = category.Icon,
-            OrderIndex = category.OrderIndex
-        };
+        return MapToResponse(category);
     }
 
+    // -------------------------
+    // DELETE (Soft Delete)
+    // -------------------------
     public async Task<bool> DeleteCategory(Guid id, Guid userId)
     {
-        var category = await _db.Categories.FirstOrDefaultAsync(c => c.Id == id && c.UserId == userId);
-        if (category == null) return false;
+        var category = await _db.Categories
+            .FirstOrDefaultAsync(c => c.Id == id && c.UserId == userId && !c.IsDeleted);
 
-        // Optional: prüfen, ob Tasks existieren
-        var hasTasks = await _db.Tasks.AnyAsync(t => t.CategoryId == id);
-        if (hasTasks) throw new Exception("Category has tasks, cannot delete");
+        if (category == null)
+            return false;
 
-        _db.Categories.Remove(category);
+        var hasTasks = await _db.Tasks
+            .AnyAsync(t => t.CategoryId == id && !t.isDeleted);
+
+        if (hasTasks)
+            throw new InvalidOperationException("Category contains tasks.");
+
+        category.IsDeleted = true;
+        category.UpdatedAt = DateTime.UtcNow;
+
         await _db.SaveChangesAsync();
+
         return true;
+    }
+
+    // -------------------------
+    // Mapping Helper
+    // -------------------------
+    private static CategoryResponse MapToResponse(Category c)
+    {
+        return new CategoryResponse
+        {
+            Id = c.Id,
+            Name = c.Name,
+            ColorHex = c.Color,
+            Icon = c.Icon,
+            OrderIndex = c.OrderIndex
+        };
     }
 }

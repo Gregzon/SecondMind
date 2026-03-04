@@ -1,0 +1,11 @@
+{
+    
+    "LoginPage_LoginTitle": "Login",
+    "LoginPage_LoginHelperTitle": "Login",
+    "LoginPage_ErrorMessage": "Login fehlgeschlagen. Prüfe E-Mail und Passwort.",
+    "InputForms_Label_Email": "E-Mail-Adresse",
+    "InputForms_Label_Password": "Passwort",
+    "LoginPage_Buttons_Login": "Einloggen",
+    "InputForms_Buttons_Register": "Registrieren"
+    
+}

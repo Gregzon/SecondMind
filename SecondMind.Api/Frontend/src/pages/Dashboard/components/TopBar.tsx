@@ -1,36 +1,49 @@
-import { useColorMode } from "@/components/ui/color-mode";
-import { Box, GridItem, Heading, IconButton } from "@chakra-ui/react";
-import { LuLogOut, LuMoon, LuSun, LuUser } from "react-icons/lu";
+import { Avatar, Box, Flex, HStack, Icon, Stack, Text } from "@chakra-ui/react";
+import { LuBrainCircuit } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
 
-
 const TopBar = () => {
-    const { colorMode, toggleColorMode } = useColorMode()
-    const navigate = useNavigate();
+  // const { colorMode, toggleColorMode } = useColorMode()
+  const navigate = useNavigate();
 
-    const logout = () => {
-        // TODO: Richting logout endpunkt dazubauen
-        navigate("/login")
-    }
+  const logout = () => {
+    // Kommt als onlick am Ende was den layer öffnet
+    // TODO: Richting logout endpunkt dazubauen
+    navigate("/login");
+  };
 
-    return (
-        <GridItem
-            px={4}
-            display="flex"
-            alignItems="center"
-            justifyContent="space-between"
-            bg={"bg.emphasized"}
-
+  return (
+    <Flex as="nav" align="center" justify="space-between" w="full" py={4}>
+      {/* Linke Seite: Logo und App-Name */}
+      <HStack>
+        <Box
+          p={1.5}
+          borderRadius="lg"
+          bg="rgba(0, 255, 255, 0.1)" // Dezenter Glow-Hintergrund für das Logo
         >
-            <Heading size="lg" color={"fg"}>SecondMind</Heading>
-            <Box spaceX={'5'}>
-                <IconButton bg={"bg"} color={"fg"} rounded={"full"} onClick={toggleColorMode}>
-                    {colorMode === "light" ? <LuSun /> : <LuMoon />}</IconButton>
-                <IconButton variant={"solid"} bg={"bg"} color={"fg"} rounded={"full"}><LuUser /></IconButton>
-                <IconButton variant={"solid"} bg={"bg"} color={"fg"} rounded={"full"} onClick={logout}><LuLogOut /></IconButton>
-            </Box>
-        </GridItem>
-    )
-}
+          <Icon as={LuBrainCircuit} w={8} h={8} color="cyan.300" />
+        </Box>
+        <Stack align="start" gap={-2}>
+          <Text fontWeight={"bold"} colorPalette={"white"}>
+            Second
+          </Text>
+          <Text fontWeight={"bold"} colorPalette={"white"}>
+            Mind
+          </Text>
+        </Stack>
+      </HStack>
+
+      {/* Rechte Seite: User Avatar */}
+      <Avatar.Root
+        as={"button"}
+        colorPalette={"cyan"}
+        onClick={() => console.log("Test Avatar Click!")}
+      >
+        <Avatar.Fallback name="Gregor Sch" />
+        <Avatar.Image src="https://bit.ly/sage-adebayo" />
+      </Avatar.Root>
+    </Flex>
+  );
+};
 
 export default TopBar;

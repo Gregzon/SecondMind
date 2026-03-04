@@ -6,7 +6,7 @@ import { ChakraProvider, defaultSystem } from '@chakra-ui/react';
 import RegisterPage from './pages/RegisterPage';
 import { ColorModeProvider } from './components/ui/color-mode';
 import DashboardLayout from './pages/Dashboard/DashboardLayout';
-import HomePage from './pages/Dashboard/pages/HomePage';
+import HomePage from './pages/Dashboard/pages/HomePage/HomePage';
 import StatsPage from './pages/Dashboard/pages/StatsPage';
 import SettingsPage from './pages/Dashboard/pages/SettingsPage';
 

@@ -1,50 +1,82 @@
-import { createSystem, defineConfig, defaultBaseConfig } from "@chakra-ui/react"
+import { createSystem, defineConfig, mergeConfigs, defaultConfig } from "@chakra-ui/react"
 
-const config = defineConfig({
-    theme: {
-        // 1. Tokens (Die Rohdaten der Farben)
-        tokens: {
-            colors: {
-                deepBlue: { value: "#0B1C2E" },
-                brandCyan: { value: "#4FD1C5" },
-            },
+const customConfig = defineConfig({
+  theme: {
+    // Token
+    semanticTokens: {
+      colors: {
+        "bg.app": {
+          value: { base: "{colors.gray.50}", _dark: "{colors.gray.950}" },
         },
-        // 2. Semantic Tokens (Die Logik für Light/Dark)
-        semanticTokens: {
-            colors: {
-                main: {
-                    value: { _light: "{colors.brandCyan}", _dark: "{colors.brandCyan}" },
-                },
-                appBg: {
-                    value: { _light: "#F7F9FC", _dark: "#0B1C2E" }, // Oben dunkel, unten hell Logik
-                },
-                textPrimary: {
-                    value: { _light: "{colors.gray.800}", _dark: "white" },
-                },
-            },
+        "bg.panel": {
+          value: { base: "{colors.white}", _dark: "{colors.gray.900}" },
         },
-        // 3. Rezepte (Deine Button-Varianten)
-        recipes: {
-            button: {
-                variants: {
-                    visual: {
-                        action: {
-                            bg: "main",
-                            color: "black",
-                            borderRadius: "xl",
-                            _hover: { opacity: 0.9 },
-                        },
-                        filter: {
-                            bg: "whiteAlpha.200",
-                            color: "white",
-                            borderRadius: "full",
-                            _hover: { bg: "whiteAlpha.300" },
-                        },
-                    },
-                },
-            },
+        "brand.solid": {
+          value: { base: "{colors.cyan.400}", _dark: "{colors.cyan.500}" },
         },
+        "text.main": {
+          value: { base: "{colors.gray.900}", _dark: "{colors.white}" },
+        },
+        "text.muted": {
+          value: { base: "{colors.gray.500}", _dark: "{colors.whiteAlpha.600}" },
+        },
+        "border.subtle": {
+          value: { base: "{colors.gray.200}", _dark: "{colors.whiteAlpha.100}" },
+        }
+      },
+      radii: {
+        "l_card": { value: "16px" },
+        "l_button": { value: "12px" },
+      },
+      sizes: {
+        "app_width": { value: "450px" },
+        "dashboard_width": { value: "800px" },
+      },
+      spacing: {
+        "page_padding": { value: { base: "{spacing.4}", md: "{spacing.10}" } },
+      }
     },
+    recipes: {
+      button: {
+        className: "chakra-button",
+        base: {
+          borderRadius: "l_button",
+          fontWeight: "bold",
+          transition: "all 0.2s",
+          flex: 1,
+          _hover: { opacity: 0.9, transform: "translateY(-1px)" },
+        },
+        variants: {
+          variant: {
+            solid: {
+              bg: "brand.solid",
+              color: "black !important",
+            },
+            outline: {
+              borderColor: "border.subtle",
+              color: "text.main",
+              _hover: { bg: "bg.app" },
+            },
+            ghost: {
+                color: "text.muted",
+                _hover: { color: "text.main", bg: "whiteAlpha.50" }
+            }
+          },
+        },
+      },
+      input: {
+        base: {
+          bg: "bg.app",
+          borderRadius: "md",
+          _focus: { ring: "2px", ringColor: "brand.solid" }
+        }
+      }
+    },
+  },
 })
 
-export const system = createSystem(defaultBaseConfig, config)
+// Hier nutzen wir mergeConfigs jetzt aktiv!
+// Es vereint die Standard-Werte (Breakpoints, Spacing) mit deinen Tokens.
+const finalConfig = mergeConfigs(defaultConfig, customConfig)
+
+export const system = createSystem(finalConfig)

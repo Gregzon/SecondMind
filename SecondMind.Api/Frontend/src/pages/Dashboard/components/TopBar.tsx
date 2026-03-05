@@ -13,35 +13,70 @@ const TopBar = () => {
   };
 
   return (
-    <Flex as="nav" align="center" justify="space-between" w="full" py={4}>
+    <Flex
+      as="nav"
+      align="center"
+      justify="space-between"
+      w="full"
+      h="full"
+      px="4" // Etwas Padding innerhalb der 60px Höhe
+      bg="bg.panel/80" // 80% Deckkraft für den Glass-Effekt
+      backdropFilter="blur(10px)" // Der "Frosted Glass" Effekt
+    >
       {/* Linke Seite: Logo und App-Name */}
-      <HStack>
+      <HStack
+        gap="3"
+        cursor="pointer"
+        onClick={() => navigate("/dashboard")}
+        _hover={{ opacity: 0.8 }}
+        transition="opacity 0.2s"
+      >
         <Box
-          p={1.5}
-          borderRadius="lg"
-          bg="rgba(0, 255, 255, 0.1)" // Dezenter Glow-Hintergrund für das Logo
+          p="1.5"
+          borderRadius="l_button" // Nutzt dein Token
+          bg="brand.solid/10" // Nutzt dein Cyan-Token mit 10% Deckkraft
         >
-          <Icon as={LuBrainCircuit} w={8} h={8} color="cyan.300" />
+          <Icon as={LuBrainCircuit} w="6" h="6" color="brand.solid" />
         </Box>
-        <Stack align="start" gap={-2}>
-          <Text fontWeight={"bold"} colorPalette={"white"}>
+        <Stack gap="0" lineHeight="1.1">
+          <Text
+            fontWeight="bold"
+            fontSize="sm"
+            color="text.main"
+            textTransform="uppercase"
+            letterSpacing="wider"
+          >
             Second
           </Text>
-          <Text fontWeight={"bold"} colorPalette={"white"}>
+          <Text
+            fontWeight="black"
+            fontSize="sm"
+            color="brand.solid"
+            textTransform="uppercase"
+            letterSpacing="wider"
+          >
             Mind
           </Text>
         </Stack>
       </HStack>
 
       {/* Rechte Seite: User Avatar */}
-      <Avatar.Root
-        as={"button"}
-        colorPalette={"cyan"}
-        onClick={() => console.log("Test Avatar Click!")}
-      >
-        <Avatar.Fallback name="Gregor Sch" />
-        <Avatar.Image src="https://bit.ly/sage-adebayo" />
-      </Avatar.Root>
+      <HStack gap="4">
+        {/* Hier könnte später noch ein DarkMode-Toggle hin */}
+
+        <Avatar.Root
+          as="button"
+          size="sm"
+          borderWidth="2px"
+          borderColor="border.subtle"
+          _hover={{ borderColor: "brand.solid" }}
+          transition="all 0.2s"
+          onClick={() => console.log("Profile Clicked")}
+        >
+          <Avatar.Fallback name="Gregor Sch" />
+          <Avatar.Image src="https://bit.ly/sage-adebayo" />
+        </Avatar.Root>
+      </HStack>
     </Flex>
   );
 };

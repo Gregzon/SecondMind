@@ -36,7 +36,7 @@ const InputSection = () => {
   };
 
   return (
-    <VStack align="stretch" gap={3}>
+    <VStack align="stretch" gap={3} paddingTop={2}>
       <Heading
         as="h2"
         size="md"
@@ -82,7 +82,7 @@ const InputSection = () => {
         <Flex
           as="button"
           onClick={handleAction}
-          bg={isTyping ? "brand.solid" : "bg.app"}
+          bg={isTyping ? "brand.solid" : "bg.panel"}
           w="80px"
           direction="column"
           align="center"

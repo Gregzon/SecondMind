@@ -1,16 +1,21 @@
-import { Avatar, Box, Flex, HStack, Icon, Stack, Text } from "@chakra-ui/react";
-import { LuBrainCircuit } from "react-icons/lu";
+import {
+  Avatar,
+  Box,
+  Flex,
+  HStack,
+  Icon,
+  Stack,
+  Text,
+  IconButton,
+} from "@chakra-ui/react";
+import { LuBrainCircuit, LuMoon, LuSun } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
+// Importiere den Hook aus deinem UI-Ordner oder direkt von Chakra
+import { useColorMode } from "@/components/ui/color-mode";
 
 const TopBar = () => {
-  // const { colorMode, toggleColorMode } = useColorMode()
+  const { colorMode, toggleColorMode } = useColorMode();
   const navigate = useNavigate();
-
-  const logout = () => {
-    // Kommt als onlick am Ende was den layer öffnet
-    // TODO: Richting logout endpunkt dazubauen
-    navigate("/login");
-  };
 
   return (
     <Flex
@@ -19,9 +24,11 @@ const TopBar = () => {
       justify="space-between"
       w="full"
       h="full"
-      px="4" // Etwas Padding innerhalb der 60px Höhe
-      bg="bg.panel/80" // 80% Deckkraft für den Glass-Effekt
-      backdropFilter="blur(10px)" // Der "Frosted Glass" Effekt
+      px="4"
+      bg="bg.panel/80"
+      backdropFilter="blur(10px)"
+      borderBottomWidth="1px"
+      borderColor="border.subtle"
     >
       {/* Linke Seite: Logo und App-Name */}
       <HStack
@@ -31,11 +38,7 @@ const TopBar = () => {
         _hover={{ opacity: 0.8 }}
         transition="opacity 0.2s"
       >
-        <Box
-          p="1.5"
-          borderRadius="l_button" // Nutzt dein Token
-          bg="brand.solid/10" // Nutzt dein Cyan-Token mit 10% Deckkraft
-        >
+        <Box p="1.5" borderRadius="l_button" bg="brand.solid/10">
           <Icon as={LuBrainCircuit} w="6" h="6" color="brand.solid" />
         </Box>
         <Stack gap="0" lineHeight="1.1">
@@ -60,21 +63,41 @@ const TopBar = () => {
         </Stack>
       </HStack>
 
-      {/* Rechte Seite: User Avatar */}
-      <HStack gap="4">
-        {/* Hier könnte später noch ein DarkMode-Toggle hin */}
+      {/* Rechte Seite: Actions & Profile */}
+      <HStack gap="3">
+        {/* Color Mode Toggle */}
+        <IconButton
+          variant="subtle"
+          bg="transparent"
+          aria-label="Toggle Color Mode"
+          onClick={toggleColorMode}
+          color="text.muted"
+          _hover={{ color: "brand.solid", bg: "whiteAlpha.100" }}
+          size="sm"
+        >
+          {colorMode === "light" ? <LuMoon /> : <LuSun />}
+        </IconButton>
 
+        {/* User Avatar */}
         <Avatar.Root
           as="button"
           size="sm"
+          colorPalette="cyan" // Nutzt deine Brand-Farbe
+          bg={"transparent"}
+          variant="subtle" // Schöner, dezenter Hintergrund
           borderWidth="2px"
           borderColor="border.subtle"
-          _hover={{ borderColor: "brand.solid" }}
+          _hover={{ borderColor: "brand.solid", transform: "scale(1.05)" }}
           transition="all 0.2s"
           onClick={() => console.log("Profile Clicked")}
         >
-          <Avatar.Fallback name="Gregor Sch" />
-          <Avatar.Image src="https://bit.ly/sage-adebayo" />
+          {/* Ohne Avatar.Image wird dieser Fallback immer angezeigt */}
+          <Avatar.Fallback
+            name="Gregor Sch"
+            color="brand.solid" // Deine Cyan-Schrift
+            fontWeight="bold"
+            fontSize="xs"
+          />
         </Avatar.Root>
       </HStack>
     </Flex>

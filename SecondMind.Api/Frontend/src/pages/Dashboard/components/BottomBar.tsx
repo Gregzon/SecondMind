@@ -43,6 +43,7 @@ const BottomBar = () => {
       {navItems.map((item) => (
         <Button
           key={item.path}
+          bg="transparent"
           variant="ghost"
           h="full"
           flex="1"

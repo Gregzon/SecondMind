@@ -2,28 +2,35 @@ import { createSystem, defineConfig, mergeConfigs, defaultConfig } from "@chakra
 
 const customConfig = defineConfig({
   theme: {
-    // Token
     semanticTokens: {
-      colors: {
-        "bg.app": {
-          value: { base: "{colors.gray.50}", _dark: "{colors.gray.950}" },
-        },
-        "bg.panel": {
-          value: { base: "{colors.white}", _dark: "{colors.gray.900}" },
-        },
-        "brand.solid": {
-          value: { base: "{colors.cyan.400}", _dark: "{colors.cyan.500}" },
-        },
-        "text.main": {
-          value: { base: "{colors.gray.900}", _dark: "{colors.white}" },
-        },
-        "text.muted": {
-          value: { base: "{colors.gray.500}", _dark: "{colors.whiteAlpha.600}" },
-        },
-        "border.subtle": {
-          value: { base: "{colors.gray.200}", _dark: "{colors.whiteAlpha.100}" },
-        }
-      },
+  colors: {
+    // Der Hintergrund der App (jetzt etwas weicher/grauer)
+    "bg.app": {
+      value: { base: "#F1F3F5", _dark: "{colors.gray.950}" }, 
+    },
+    // Die Karten (Panel) bleiben Weiß, um Tiefe zu erzeugen
+    "bg.panel": {
+      value: { base: "#f7fbffb0", _dark: "{colors.gray.900}" },
+    },
+    // Deine dynamische Brandfarbe
+    "brand.solid": {
+  value: { 
+    // Wir nutzen Azure (Blue 500/600) als Standard-Fallback
+    base: "var(--app-brand-color, {colors.blue.500})", 
+    _dark: "var(--app-brand-color, {colors.blue.600})" 
+  },
+    },
+    // Text etwas entspannter als reines Schwarz
+    "text.main": {
+      value: { base: "#1A202C", _dark: "{colors.white}" },
+    },
+    "text.muted": {
+      value: { base: "#4A5568", _dark: "{colors.whiteAlpha.600}" },
+    },
+    "border.subtle": {
+      value: { base: "#E9ECEF", _dark: "{colors.whiteAlpha.100}" },
+    }
+  },
       radii: {
         "l_card": { value: "16px" },
         "l_button": { value: "12px" },
@@ -64,19 +71,8 @@ const customConfig = defineConfig({
           },
         },
       },
-      input: {
-        base: {
-          bg: "bg.app",
-          borderRadius: "md",
-          _focus: { ring: "2px", ringColor: "brand.solid" }
-        }
-      }
     },
   },
 })
 
-// Hier nutzen wir mergeConfigs jetzt aktiv!
-// Es vereint die Standard-Werte (Breakpoints, Spacing) mit deinen Tokens.
-const finalConfig = mergeConfigs(defaultConfig, customConfig)
-
-export const system = createSystem(finalConfig)
+export const system = createSystem(mergeConfigs(defaultConfig, customConfig))

@@ -10,11 +10,11 @@ import { ChakraProvider } from "@chakra-ui/react";
 import RegisterPage from "./pages/RegisterPage";
 import { ColorModeProvider } from "./components/ui/color-mode";
 import DashboardLayout from "./pages/Dashboard/DashboardLayout";
-import HomePage from "./pages/Dashboard/pages/HomePage/HomePage";
 import StatsPage from "./pages/Dashboard/pages/StatsPage";
-import SettingsPage from "./pages/Dashboard/pages/SettingsPage";
 import { system } from "./theme";
 import { LoginPage } from "./pages/LoginPage";
+import { HomePage } from "./pages/Dashboard/pages/HomePage/HomePage";
+import { SettingsPage } from "./pages/Dashboard/pages/SettingsPage";
 
 export function App() {
   const [auth, setAuth] = useState<AuthResponse | null>(null);
@@ -44,7 +44,7 @@ export function App() {
             >
               <Route index element={<HomePage />} />
               <Route path="stats" element={<StatsPage />} />
-              <Route path="settings" element={<SettingsPage />} />
+              <Route path="settings" element={<SettingsPage></SettingsPage>} />
             </Route>
             <Route path="*" element={<Navigate to="/login" replace />} />
           </Routes>

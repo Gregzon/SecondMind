@@ -3,59 +3,71 @@ import { LuSearchX } from "react-icons/lu";
 import { KnowledgeCard } from "./components/KnowledgeCard";
 
 interface KnowledgeCardsProps {
-  activeFilter: string;
+  timeFilter: string; // "today" | "tomorrow" | "next_week" | "someday"
 }
-
-// Wir definieren den Typ einmal sauber
-type CardType = "task" | "idea" | "location" | "list";
 
 interface CardData {
   id: number;
   cardTitle: string;
   cardBody: string | string[];
-  cardType: CardType;
+  // Die Smart-Felder sind optional
+  location?: string;
+  time?: string;
+  dueDate: string; // Internes Datum zum Filtern (YYYY-MM-DD)
 }
 
-export const KnowledgeCards = ({ activeFilter }: KnowledgeCardsProps) => {
+export const KnowledgeCards = ({ timeFilter }: KnowledgeCardsProps) => {
+  // Beispiel-Daten passend zum neuen Konzept
   const allCards: CardData[] = [
     {
       id: 1,
-      cardTitle: "Test Idea",
-      cardBody: "Moiners Idears",
-      cardType: "idea",
+      cardTitle: "Rewe einkaufen",
+      cardBody: ["Katzenstreu", "Wurst", "Käse"],
+      location: "Rewe",
+      time: "18:00",
+      dueDate: "2026-03-06", // Heute
     },
     {
       id: 2,
-      cardTitle: "Test List",
-      cardBody: ["Eintrag 1", "Eintrag 2"],
-      cardType: "list",
+      cardTitle: "Idee: Neuer Blogpost",
+      cardBody: "Thema: KI im Alltag",
+      dueDate: "2026-03-07", // Morgen
     },
     {
       id: 3,
-      cardTitle: "Test Location",
-      cardBody: "Moiners Locationers",
-      cardType: "location",
+      cardTitle: "Fitnessstudio",
+      cardBody: "Beintraining",
+      location: "McFit",
+      dueDate: "2026-03-10", // Nächste Woche
     },
     {
       id: 4,
-      cardTitle: "Test Task",
-      cardBody: "Moiners Taskers",
-      cardType: "task",
+      cardTitle: "Projekt-Kickoff",
+      cardBody: "Meeting mit dem Team",
+      time: "09:00",
+      dueDate: "2026-03-06", // Heute
     },
   ];
 
+  // Logik zum Filtern basierend auf der Lane
   const filteredCards = allCards.filter((card) => {
-    if (activeFilter === "all") return true;
-    return card.cardType === activeFilter;
+    const today = "2026-03-06"; // Beispielhafter Check
+    const tomorrow = "2026-03-07";
+
+    if (timeFilter === "today") return card.dueDate === today;
+    if (timeFilter === "tomorrow") return card.dueDate === tomorrow;
+    // ... weitere Filterlogik für next_week / someday
+    return true;
   });
 
-  // Empty State, falls der Filter nichts findet
   if (filteredCards.length === 0) {
     return (
-      <Center p={10} w="full">
+      <Center p={10} minW="300px">
         <VStack gap={2} color="text.muted">
-          <LuSearchX size="40px" />
-          <Text fontSize="sm">Hier ist noch nichts zu finden...</Text>
+          <LuSearchX size="30px" />
+          <Text fontSize="xs" fontWeight="bold">
+            Keine Einträge
+          </Text>
         </VStack>
       </Center>
     );
@@ -68,7 +80,9 @@ export const KnowledgeCards = ({ activeFilter }: KnowledgeCardsProps) => {
           key={card.id}
           cardTitle={card.cardTitle}
           cardBody={card.cardBody}
-          cardType={card.cardType}
+          // Wir geben die neuen Felder an die Einzelkarte weiter
+          location={card.location}
+          time={card.time}
         />
       ))}
     </>

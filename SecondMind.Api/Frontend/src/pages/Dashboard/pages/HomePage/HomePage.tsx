@@ -1,28 +1,26 @@
-import { VStack, Heading, Text, Box } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import InputSection from "./components/InputSection";
-import { useTranslation } from "react-i18next";
-import { KnowledgeCardsExlorer } from "./components/KnowledgeCardsExplorer/KnowledgeCardsExplorer";
+import { KnowledgeCardsExplorer } from "./components/KnowledgeCardsExplorer/KnowledgeCardsExplorer";
 
-const HomePage = () => {
-  const { t } = useTranslation();
-
+export const HomePage = () => {
   return (
-    <VStack align={"stretch"} gap={8} w={"full"}>
-      {/* Kleiner Header-Bereich für den Kontext */}
-      <Box>
-        <Heading size="md" color="text.main" fontWeight="bold">
-          {t("HomePage_Greeting", "Hallo Gregor")} 👋
-        </Heading>
-        <Text color="text.muted" fontSize="xs">
-          {t("HomePage_SubGreeting", "Was hast du heute gelernt?")}
-        </Text>
+    <>
+      {/* 2. Sticky InputSection */}
+      <Box
+        position="sticky"
+        top="0" // Da sie im Scroll-Container nach der TopBar kommt, ist 0 der Rand des Containers
+        zIndex={10}
+        bg="bg.app" // Wichtig: Hintergrundfarbe setzen, damit Karten nicht durchscheinen
+        paddingBottom={4}
+        px="6"
+      >
+        <InputSection />
       </Box>
 
-      <InputSection />
-
-      <KnowledgeCardsExlorer />
-    </VStack>
+      {/* 3. Lanes Bereich */}
+      <Box px="6">
+        <KnowledgeCardsExplorer />
+      </Box>
+    </>
   );
 };
-
-export default HomePage;

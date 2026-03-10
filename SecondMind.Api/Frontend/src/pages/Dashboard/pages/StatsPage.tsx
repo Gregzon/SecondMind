@@ -1,7 +1,7 @@
-import { Heading } from "@chakra-ui/react"
+import { Heading } from "@chakra-ui/react";
 
 const StatsPage = () => {
-    return <Heading>Statistiken</Heading>
-}
+  return <Heading>Statistiken</Heading>;
+};
 
-export default StatsPage
+export default StatsPage;

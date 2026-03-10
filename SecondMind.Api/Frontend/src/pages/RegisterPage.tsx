@@ -17,7 +17,13 @@ import {
 } from "@chakra-ui/react";
 
 import { PasswordInput } from "@/components/ui/password-input";
-import { LuMail, LuLock, LuUserPlus, LuArrowLeft } from "react-icons/lu";
+import {
+  LuMail,
+  LuLock,
+  LuArrowLeft,
+  LuBrainCircuit,
+  LuSignature,
+} from "react-icons/lu";
 import { register } from "@/services/AuthService";
 
 import { registerSchema, type RegisterFormData } from "../util/register.schema";
@@ -51,16 +57,10 @@ const RegisterPage = ({ onLogin }: RegisterPageProps) => {
   };
 
   return (
-    <Flex
-      minH="100vh"
-      align="center"
-      justify="center"
-      p="page_padding"
-      bg="bg.app"
-    >
+    <Flex minH="100vh" align="center" justify="center" p={3} bg="bg.app">
       <Box
         bg="bg.panel"
-        p="page_padding"
+        p={3}
         borderWidth="1px"
         borderColor="border.subtle"
         borderRadius="l_card"
@@ -79,7 +79,7 @@ const RegisterPage = ({ onLogin }: RegisterPageProps) => {
               mb={2}
               display="inline-block"
             >
-              <LuUserPlus size="24px" />
+              <LuBrainCircuit size="24px" />
             </Box>
             <Heading
               size={{ base: "xl", md: "2xl" }}
@@ -157,13 +157,14 @@ const RegisterPage = ({ onLogin }: RegisterPageProps) => {
                     fontWeight="bold"
                     _hover={{ opacity: 0.9, transform: "translateY(-1px)" }}
                   >
-                    {t("InputForms_Buttons_Register")}
+                    {t("InputForms_Buttons_Register")} <LuSignature />
                   </Button>
 
                   <Button
                     flex={1}
                     variant="ghost"
-                    color="text.muted"
+                    color="text.main"
+                    bg="transparent"
                     borderRadius="l_button"
                     onClick={() => navigate("/login")}
                     _hover={{ color: "text.main", bg: "whiteAlpha.100" }}

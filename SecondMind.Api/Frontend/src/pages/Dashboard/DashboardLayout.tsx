@@ -21,7 +21,7 @@ const DashboardLayout = () => {
         p={0}
         display="flex"
         flexDirection="column"
-        bg="bg.panel" // Die eigentliche App-Fläche (Weiß oder Dunkelgrau)
+        bg="bg.app" // Die eigentliche App-Fläche (Weiß oder Dunkelgrau)
         boxShadow="md" // Optional: Ein leichter Schatten für den "App-im-Browser" Look
         position="relative"
       >
@@ -39,7 +39,7 @@ const DashboardLayout = () => {
         <Box
           flex="1"
           overflowY="auto"
-          p="page_padding" // Nutzt dein responsives Padding
+          px={2} // Nutzt dein responsives Padding
           pb="80px" // Puffer für die BottomBar, damit nichts verdeckt wird
         >
           <Outlet />

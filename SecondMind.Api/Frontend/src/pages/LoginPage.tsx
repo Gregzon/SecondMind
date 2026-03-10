@@ -15,7 +15,13 @@ import {
   InputGroup,
 } from "@chakra-ui/react";
 import { login } from "@/services/AuthService";
-import { LuClipboard, LuLock, LuLogIn, LuMail } from "react-icons/lu";
+import {
+  LuBrainCircuit,
+  LuClipboard,
+  LuLock,
+  LuLogIn,
+  LuMail,
+} from "react-icons/lu";
 import { useTranslation } from "react-i18next";
 
 interface LoginPageProps {
@@ -45,16 +51,10 @@ export const LoginPage = ({ onLogin }: LoginPageProps) => {
   };
 
   return (
-    <Flex
-      minH="100vh"
-      align="center"
-      justify="center"
-      p="page_padding"
-      bg="bg.app"
-    >
+    <Flex minH="100vh" align="center" justify="center" px={3} bg="bg.app">
       <Box
         bg="bg.panel" // Dunklerer Hintergrund für modernen Look
-        p="page_padding"
+        p={3}
         borderWidth="1px"
         borderColor="border.subtle"
         borderRadius="l_card"
@@ -64,6 +64,16 @@ export const LoginPage = ({ onLogin }: LoginPageProps) => {
       >
         <VStack gap={{ base: 6, md: 8 }} align="stretch">
           <VStack gap={2} textAlign="center">
+            <Box
+              bg="brand.solid"
+              color="black"
+              p={3}
+              borderRadius="xl"
+              mb={2}
+              display="inline-block"
+            >
+              <LuBrainCircuit size="24px" />
+            </Box>
             <Heading
               size={{ base: "xl", md: "2xl" }}
               color="text.main"
@@ -148,7 +158,8 @@ export const LoginPage = ({ onLogin }: LoginPageProps) => {
                     flex={1}
                     variant="outline"
                     borderColor="border.subtle"
-                    color="text.main"
+                    color={"text.main"}
+                    bg="transparent"
                     borderRadius="l_button"
                     onClick={() => navigate("/register")}
                     _hover={{ opacity: 0.9, transform: "translateY(-1px)" }}

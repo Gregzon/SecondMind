@@ -80,7 +80,6 @@ export const KnowledgeCards = ({ timeFilter }: KnowledgeCardsProps) => {
           key={card.id}
           cardTitle={card.cardTitle}
           cardBody={card.cardBody}
-          // Wir geben die neuen Felder an die Einzelkarte weiter
           location={card.location}
           time={card.time}
         />

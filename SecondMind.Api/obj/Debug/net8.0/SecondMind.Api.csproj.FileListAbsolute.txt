@@ -127,3 +127,4 @@ C:\Projects\SecondMind\SecondMind.Api\bin\Debug\net8.0\Frontend\ios\App\App\Asse
 C:\Projects\SecondMind\SecondMind.Api\bin\Debug\net8.0\Frontend\ios\App\App\capacitor.config.json
 C:\Projects\SecondMind\SecondMind.Api\bin\Debug\net8.0\Frontend\src\locales\de.json
 C:\Projects\SecondMind\SecondMind.Api\bin\Debug\net8.0\Frontend\src\locales\en.json
+C:\Projects\SecondMind\SecondMind.Api\bin\Debug\net8.0\package.json

@@ -42,6 +42,7 @@ export const KnowledgeCard = ({
 }: KnowledgeCardProps) => {
   return (
     <Box
+      pt={2}
       css={{
         breakInside: "avoid",
         display: "inline-block",
@@ -56,7 +57,7 @@ export const KnowledgeCard = ({
         borderColor="border.subtle"
         borderRadius="l_card"
         transition="all 0.2s"
-        _hover={{ borderColor: "brand.solid", transform: "translateY(-4px)" }}
+        _hover={{ borderColor: "brand.solid", transform: "translateY(-2px)" }}
       >
         <Card.Header pb="2">
           <HStack justify="space-between" mb="2" align={"center"}>

@@ -1,0 +1,14 @@
+{
+  "name": "secondmind-root",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Zentrale Steuerung für Backend und Frontend",
+  "scripts": {
+    "frontend": "npm run dev --prefix Frontend",
+    "backend": "dotnet run",
+    "dev": "concurrently -n \"FE,BE\" -c \"cyan,magenta\" \"npm run frontend\" \"npm run backend\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
